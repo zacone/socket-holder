@@ -1,0 +1,18 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "socket-holder.port",
+      "type": "java.lang.Integer",
+      "description": "Websocket port config.",
+      "defaultValue": 8081
+    },
+    {
+      "name": "socket-holder.path",
+      "type": "java.lang.String",
+      "description": "Websocket path config.",
+      "defaultValue": "/ws"
+    }
+  ],
+  "hints": []
+}
