@@ -1,13 +1,13 @@
 package com.isthisone.socketholder.channel.netty;
 
-import com.isthisone.socketholder.channel.HolderChannel;
+import com.isthisone.socketholder.channel.AbstractHolderChannel;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.AttributeKey;
 
 import java.util.Objects;
 
-public class NettyChannel implements HolderChannel {
+public class NettyChannel extends AbstractHolderChannel {
 
     private final Channel channel;
 

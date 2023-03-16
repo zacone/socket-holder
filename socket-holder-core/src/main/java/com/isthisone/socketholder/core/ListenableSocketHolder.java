@@ -22,14 +22,26 @@ public class ListenableSocketHolder extends SocketHolder implements SocketListen
     }
 
     @Override
-    void notifyRegister(HolderChannel channel) {
-        for (SocketListener listener : listeners) {
-            listener.onSocketRegister(channel);
-
-        }
+    public void register(HolderChannel channel) {
+        super.register(channel);
+        notifyRegister(channel);
     }
 
     @Override
+    public boolean unregister(HolderChannel channel) {
+        boolean success = super.unregister(channel);
+        if (success) {
+            notifyUnregister(channel);
+        }
+        return success;
+    }
+
+    void notifyRegister(HolderChannel channel) {
+        for (SocketListener listener : listeners) {
+            listener.onSocketRegister(channel);
+        }
+    }
+
     void notifyUnregister(HolderChannel channel) {
         for (SocketListener listener : listeners) {
             listener.onSocketUnregister(channel);

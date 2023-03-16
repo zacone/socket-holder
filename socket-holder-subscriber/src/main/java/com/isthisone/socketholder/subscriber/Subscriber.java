@@ -14,4 +14,12 @@ public interface Subscriber<T> {
 
     Set<String> get(T k);
 
+    Set<String> getAll();
+
+    boolean exist(T k);
+
+    boolean exist(HolderChannel channel);
+
+    boolean exist(T key, HolderChannel channel);
+
 }

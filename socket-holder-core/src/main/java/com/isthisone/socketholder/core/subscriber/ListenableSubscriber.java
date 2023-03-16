@@ -40,6 +40,26 @@ public class ListenableSubscriber<T> implements Subscriber<T>, SocketListener {
     }
 
     @Override
+    public Set<String> getAll() {
+        return subscriber.getAll();
+    }
+
+    @Override
+    public boolean exist(T key) {
+        return subscriber.exist(key);
+    }
+
+    @Override
+    public boolean exist(HolderChannel channel) {
+        return subscriber.exist(channel);
+    }
+
+    @Override
+    public boolean exist(T key, HolderChannel channel) {
+        return subscriber.exist(key, channel);
+    }
+
+    @Override
     public void onSocketRegister(HolderChannel channel) {
         //ignore
     }

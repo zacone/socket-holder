@@ -15,7 +15,7 @@ Socket Holder是一个socket管理框架，核心功能包括socket管理、业�
 <dependency>
     <groupId>com.isthisone</groupId>
     <artifactId>socket-holder-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -62,17 +62,17 @@ public class SocketHolderConfiguration {
 
 ```java
 
-@Component
 @RequiredArgsConstructor
+@Component
 @Slf4j
 public class MyWebsocketHandler implements WebsocketHandler {
 
-    private final DefaultSocketNotify defaultSocketNotify;
+    private final StringSubscriberNotify stringSubscriberNotify;
 
     @Override
     public void process(HolderChannel channel, String text) {
         log.info("id-{},text-{}", channel.getId(), text);
-        defaultSocketNotify.subscribe("key", channel);
+        stringSubscriberNotify.subscribe("key", channel);
     }
 }
 ```
@@ -97,19 +97,17 @@ public class Tester() {
 
 ```java
 
-@EnableSocketHolder
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class MyRedisBroadcastListener extends RedisBroadcastListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyRedisBroadcastListener.class);
-
-    private final DefaultSocketNotify defaultSocketNotify;
+    private final StringSubscriberNotify stringSubscriberNotify;
 
     @Override
     public void listen(String topic, String msg) {
-        logger.info("topic-{},msg-{}", topic, msg);
-        defaultSocketNotify.notify("key", msg);
+        log.info("topic-{},msg-{}", topic, msg);
+        stringSubscriberNotify.notify("key", msg);
     }
 }
 ```

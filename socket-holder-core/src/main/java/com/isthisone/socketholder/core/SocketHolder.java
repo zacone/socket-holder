@@ -3,27 +3,18 @@ package com.isthisone.socketholder.core;
 import com.isthisone.socketholder.channel.HolderChannel;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class SocketHolder {
+public class SocketHolder implements SocketRegistry, SocketNotify {
 
-    private final Map<String, HolderChannel> channelMap = new ConcurrentHashMap<>();
+    protected final Map<String, HolderChannel> channelMap = new ConcurrentHashMap<>();
 
-    public void sendAll(String msg) {
-        for (HolderChannel channel : channelMap.values()) {
-            if (channel != null && channel.isOpen()) {
-                channel.send(msg);
-            }
-        }
+    public HolderChannel getChannel(String socketId) {
+        return channelMap.get(socketId);
     }
 
-    public void send(String socketId, String msg) {
-        HolderChannel channel = channelMap.get(socketId);
-        if (channel != null && channel.isOpen()) {
-            channel.send(msg);
-        }
-    }
-
+    @Override
     public void register(HolderChannel channel) {
         HolderChannel oldChannel = channelMap.putIfAbsent(channel.getId(), channel);
         if (oldChannel != null) {
@@ -32,17 +23,32 @@ public abstract class SocketHolder {
                 unregister(oldChannel);
             }
         }
-        notifyRegister(channel);
     }
 
-    public void unregister(HolderChannel channel) {
-        boolean success = channelMap.remove(channel.getId(), channel);
-        if (success) {
-            notifyUnregister(channel);
+    @Override
+    public boolean unregister(HolderChannel channel) {
+        return channelMap.remove(channel.getId(), channel);
+    }
+
+    @Override
+    public void send(String socketId, String msg) {
+        HolderChannel channel = channelMap.get(socketId);
+        if (channel != null && channel.isOpen()) {
+            channel.send(msg);
         }
     }
 
-    abstract void notifyRegister(HolderChannel channel);
+    @Override
+    public void send(Set<String> socketIds, String msg) {
+        for (String socketId : socketIds) {
+            send(socketId, msg);
+        }
+    }
 
-    abstract void notifyUnregister(HolderChannel channel);
+    @Override
+    public void sendAll(String msg) {
+        for (HolderChannel channel : channelMap.values()) {
+            send(channel.getId(), msg);
+        }
+    }
 }

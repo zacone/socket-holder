@@ -4,7 +4,7 @@ import com.isthisone.socketholder.autoconfigure.socket.SocketHandler;
 import com.isthisone.socketholder.autoconfigure.socket.embedded.NettyServerBootstrap;
 import com.isthisone.socketholder.autoconfigure.properties.SocketHolderProperties;
 import com.isthisone.socketholder.autoconfigure.socket.SocketServerBootstrap;
-import com.isthisone.socketholder.autoconfigure.subscriber.DefaultSocketNotify;
+import com.isthisone.socketholder.autoconfigure.subscriber.StringSubscriberNotify;
 import com.isthisone.socketholder.broadcast.client.DefaultSocketHolderClient;
 import com.isthisone.socketholder.broadcast.client.SocketHolderClient;
 import com.isthisone.socketholder.broadcast.redis.client.RedisCaller;
@@ -40,9 +40,9 @@ public class SocketHolderAutoConfiguration {
 
     @Bean(destroyMethod = "destroy")
     @ConditionalOnBean(ListenableSocketHolder.class)
-    public DefaultSocketNotify defaultSocketNotify(ListenableSocketHolder listenableSocketHolder) {
+    public StringSubscriberNotify stringSubscriberNotify(ListenableSocketHolder listenableSocketHolder) {
 
-        return new DefaultSocketNotify(listenableSocketHolder);
+        return new StringSubscriberNotify(listenableSocketHolder);
     }
 
     @Bean
